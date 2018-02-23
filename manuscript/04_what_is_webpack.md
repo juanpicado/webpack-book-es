@@ -1,34 +1,35 @@
-# What is Webpack
+# Qué es Webpack
 
-Webpack is a **module bundler**. Webpack can take care of bundling alongside a separate task runner, however, the line between bundler and task runner has become blurred thanks to community developed webpack plugins. Sometimes these plugins are used to perform tasks that are usually done outside of webpack, such as cleaning the build directory or deploying the build.
 
-React with **Hot Module Replacement** (HMR) helped to greatly popularize webpack and led to webpack's usage in other environments, such as [Ruby on Rails](https://github.com/rails/webpacker). Despite its name, webpack is not limited to the web alone. It can bundle for other targets as well, as discussed in the *Build Targets* chapter.
+Webpack es un **empaquetador de modulos**. Webpack se encargará de empaquetar en paralelo a un ejecutador de tareas, sin embargo, la línea entre un empaquetador y un ejecutador de tareas es algo borrosa gracias a la comunidad que ha desarrollado extensiones para webpack. A veces estas extensiones son usadas para ejecutar tareas que usualmente habian sido echas fuera de webpack, tales como limpiar directorio de construcción o el despliegue del proyecto.
 
-T> If you want to understand build tools and their history in a better detail, check out the *Comparison of Build Tools* appendix.
+React con  **Hot Module Replacement** (HMR) ayudó enormemente a popularizar webpack y guió el uso de webpack en otros ambientes, tales como [Ruby on Rails](https://github.com/rails/webpacker). A pesar del nombre, webpack no se ha limitado solo a la web. Puede empaquetar muchos otros objectivos también, como se discute en el capítulo de *Construir Objetivos*.
 
-## Webpack Relies on Modules
+T> Si tu quieres entender las herramientras de construcción y su historia en detalle, echa un vistazo a el apéndice de *Comparación de Herramientras de Construcción*.
 
-The smallest project you can bundle with webpack consists of **input** and **output**. The bundling process begins from user defined **entries**. Entries themselves are **modules** and can point to other modules through **imports**.
+## Webpack Depende de Modulos
 
-When you bundle a project using webpack, it traverses through imports, constructing a **dependency graph** of the project and then generating the **output** based on the configuration. Additionally, it's possible to define **split points** generating separate bundles within the project code itself.
+El proyecto más pequeño que puedas empaquetar con webpack consiste en una **entrada** y una **salida**. El proceso de empaquetado empieza por un serie de **entradas**. Las entradas en su son **modulos** y pueden apuntar a otros modulos a través de **importaciones**.
 
-Webpack supports ES2015, CommonJS, and AMD module formats out of the box. The loader mechanism works for CSS as well, with `@import` and `url()` support through *css-loader*. You can also find plugins for specific tasks, such as minification, internationalization, HMR, and so on.
+Cuando empaquetas un proyecto usando webpack, se recorre a través de importaciones, construyendo un **gráfico de dependencias** del proyecto y generando un **resultado** basado en la configuración. Adicionalmente, es posible definir **puntos de separación** generado diferentes paquetes dentro del código de proyecto en sí mismo.
 
-T> A dependency graph is a directed graph that describes how nodes relate to each other. In this case the graph definition is defined through references (`require`, `import`) between files. Webpack traverses this information in a static manner without executing the source to generate the graph it needs to create bundles.
+Webpack soporta formatos ES2015, CommonJS y modulos AMD listos para usar. El mecanismo funciona para CSS tambien, con `@import` y `url()` soportados usando *css-loader*. También puedes encontar extensiones para tareas específicas, como minificación, internacionalización, HMR y demás.
 
-## Webpack's Execution Process
+T> Un grafo de dependendencias es un gráfo dirigido que describe como nodos se relacionan unos a los otros. En este caso el grafo dirigido es definido a traves de referencias (`require`, `import`) entre archivos. Webpack recorre esta información en una manera estática sin ejecutar el origen y generando el grafo que es necesitado para crear los paquetes.
+
+## Ejecución de Proceso de Webpack
 
 ![Webpack's execution process](images/webpack-process.png)
 
-Webpack begins its work from **entries**. Often these are JavaScript modules where webpack begins its traversal process. During this process, webpack evaluates entry matches against **loader** configurations that tell webpack how to transform each match.
+Webpack empieza su trabajo desde las **entradas**. Amenudo estas son modulos de JavaScript donde webpack empieza el proceso de recorrido. Durante este proceso, webpack evalua los emparejamientos a traves de configuracion de **loader** que le dice a webpack como transformar cada coincidencia.
 
 {pagebreak}
 
-### Resolution Process
+### Proceso de Resolución
 
-An entry itself is a module. When webpack encounters one, webpack tries to match the entry against the file system using the entry's `resolve` configuration. You can tell webpack to perform the lookup against specific directories in addition to *node_modules*. It's also possible to adjust the way webpack matches against file extensions, and you can define specific aliases for directories. The *Package Consuming Techniques* chapter covers these ideas in greater detail.
+Una entrada en su misma es un módulo. Cuando webpack encuentra una, webpack trata de coincidir la entrada en contra de un archivo del sistema usando la entrada en la configuración `resolve`. Puedes decirle a webpack que ejecute una busqueda a traves de diferentes directorios en adición de *node_modules*. También es posible ajustar la manera que webpack empareja con extensiones de archivos, y puedes definir alias específicos para directorios. El capítulo de *Técnicas de Consumir Paquetes* cubre esas ideas en gran detalle.
 
-If the resolution pass failed, webpack raises a runtime error. If webpack managed to resolve a file correctly, webpack performs processing over the matched file based on the loader definition. Each loader applies a specific transformation against the module contents.
+Si la resolución del archivo falla, webpack reacciona con un error de ejecución. Si webpack consigue resolver el archivo correctamente, webpack ejecuta el proceso sobre el archivo coincidente basado en al definición del loader. Cada loader aplica a una transformación específica contra el contenido de cada modulo.
 
 The way a loader gets matched against a resolved file can be configured in multiple ways, including by file type and by location within the file system. Webpack's flexibility even allows you to apply specific transformation against a file based on *where* it was imported to the project.
 
